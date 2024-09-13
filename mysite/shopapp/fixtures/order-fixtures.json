@@ -1,0 +1,1 @@
+[{"model": "shopapp.order", "pk": 2, "fields": {"delivery_address": "Petrogradka st, 8", "promocode": "SALE2025", "created_at": "2024-05-08T17:44:21.942Z", "user": 2, "products": [2, 1]}}, {"model": "shopapp.order", "pk": 3, "fields": {"delivery_address": "Random st. 8", "promocode": "BESTSELL", "created_at": "2024-05-10T06:57:00.796Z", "user": 2, "products": [1, 3]}}]

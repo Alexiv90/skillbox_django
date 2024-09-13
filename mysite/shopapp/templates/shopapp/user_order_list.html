@@ -1,0 +1,73 @@
+{% extends 'shopapp/base.html' %}
+{% load cache %}
+
+{% block title %}
+    User orders
+{% endblock %}
+
+{% block body %}
+    <div>
+    <h1>User info</h1>
+        {% if user_.profile %}
+            {% if user_.profile.avatar %}
+                <img src="{{ user_.profile.avatar.url }}" alt="{{ user_.profile.avatar.name }}">
+                {% if user.username == user_.username or user.is_staff %}
+                    <div>
+                        <a href="{% url 'myauth:change-avatar' pk=user_.profile.pk %}">Change avatar</a>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>User don't have avatar</p>
+                {% if user.username == user_.username or user.is_staff %}
+                    <div>
+                        <a href="{% url 'myauth:change-avatar' pk=user_.profile.pk %}">Set avatar</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <p>User don't have profile</p>
+            {% if user.username == user_.username or user.is_staff %}
+                <div>
+                    <a href="{% url 'myauth:create-profile' pk=user.pk %}">Update profile</a>
+                </div>
+            {% endif %}
+        {% endif %}
+
+
+        <h2>Detail </h2>
+        <p>Username: {{ user.username }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Bio: {{ user.profile.bio }}</p>
+    </div>
+    <div>
+    <h1> Orders: </h1>
+    {% if object_list %}
+        {% cache 100 orderinfo  user.pk %}
+        {% for order in object_list %}
+            <div>
+            <p><a href="{% url 'shopapp:order_details' pk=order.pk %}"> Deteils#{{ order.pk }}</a> </p>
+        	<p>Order by: {% firstof order.user.first_name order.user.username %}</p>
+        	<p>Promocode: {{ order.promocode }}</p>
+        	<p>Delivery address: {{order.delivery_address}}</p>
+            <div>
+                Products in order:
+                <ul>
+                    {% for product in order.products.all %}
+                        <li>{{ product.name }} for ${{ product.price }}</li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        	</div>
+        {% endfor %}
+        {% endcache %}
+    {% else %}
+        <h3> No Orders yet</h3>
+    {% endif %}
+    </div>
+    <div>
+        <a href="{% url 'shopapp:create_order' %}">Create new order</a>
+    </div>
+{% endblock %}

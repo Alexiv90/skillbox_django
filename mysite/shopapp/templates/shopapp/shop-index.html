@@ -1,0 +1,46 @@
+{% extends 'shopapp/base.html' %}
+{% load cache %}
+{% block title %}
+    Shopp Index
+{% endblock %}
+
+
+{% block body %}
+    <h1>Hello Shop Index</h1>
+
+    <div>
+        <ul>
+            {% for name,price in products %}
+                <li>{{ name|center:"15" }} for ${{ price }}</li>
+                {% if name|length_is:'7'  %}
+                <span>Lucky product</span>
+                {% endif %}
+            {% empty %}
+                No products here
+            {% endfor %}
+
+        </ul>
+    </div>
+    
+    <div>
+        <strong>
+            You have {{ items }} item{{ items|pluralize:"es" }}
+        </strong>
+    </div>
+    
+    <div>
+    {% comment "Optional note" %}
+    <p>Commented out text with {{ Now|date:"c" }}</p>
+    {% endcomment %}
+    </div>
+    {% cache 100 lorem %}
+    <div>
+        {% lorem 3 p random %}
+    </div>
+    {% endcache %}
+    <div>{{ Now|date:"M" }}</div>
+    <div>
+        Time running : {{ time_running }}
+    </div>
+
+{% endblock %}

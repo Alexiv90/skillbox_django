@@ -1,0 +1,48 @@
+{% extends 'myauth/base.html' %}
+
+{% block title %}
+    About me
+{% endblock %}
+
+{% block body %}
+    <h1>User info</h1>
+    {% if user.is_authenticated %}
+
+            {% if user_.profile %}
+                {% if user_.profile.avatar %}
+                    <img src="{{ user_.profile.avatar.url }}" alt="{{ user_.profile.avatar.name }}">
+                    {% if user.username == user_.username or user.is_staff %}
+                        <div>
+                            <a href="{% url 'myauth:change-avatar' pk=user_.profile.pk %}">Change avatar</a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p>User don't have avatar</p>
+                    {% if user.username == user_.username or user.is_staff %}
+                        <div>
+                            <a href="{% url 'myauth:change-avatar' pk=user_.profile.pk %}">Set avatar</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <p>User don't have profile</p>
+                {% if user.username == user_.username or user.is_staff %}
+                    <div>
+                        <a href="{% url 'myauth:create-profile' pk=user.pk %}">Update profile</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+
+        <h2>Detail</h2>
+        <p>Username: {{ user.username }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Bio: {{ user.profile.bio }}</p>
+
+    {% else %}
+        <h2> User is anonymous</h2>
+    {% endif %}
+{% endblock %}
+
