@@ -15,21 +15,10 @@ services:
     env_file:
       - .env
     logging:
-      driver: loki
+      driver: "json-file"
       options:
-        loki-url: http://host.docker.internal:3100/loki/api/v1/push
+        max-file: "10"
+        max-size: "200k"
     volumes:
       - ./mysite/database:/app/database
-
-  grafana:
-    image: grafana/grafana:latest
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    ports:
-      - "3000:3000"
-  loki:
-    image: grafana/loki:latest
-    ports:
-      - "3100:3100"
 
